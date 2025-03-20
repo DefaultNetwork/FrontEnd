@@ -9,8 +9,8 @@ import numpy as np
 
 from styling import render_metric_card, render_info_card, render_header
 from analysis import (
-    analyze_energy_trends, 
-    identify_anomalies, 
+    analyze_energy_trends,
+    identify_anomalies,
     prepare_trends_data,
     calculate_monthly_consumption,
     calculate_weekday_consumption,
@@ -30,23 +30,19 @@ from visualization import (
 
 def render_sidebar(energy_generation, energy_consumption):
     """
-    Render the sidebar with filters and controls
-    
-    Args:
-        energy_generation (DataFrame): Energy generation data
-        energy_consumption (DataFrame): Energy consumption data
-        
-    Returns:
-        dict: Dictionary of selected filter values
-    """
-    from styling import render_logo
-    from data_loader import get_date_range_values, get_energy_sources
-    
-    with st.sidebar:
-        # Custom WebFlow-style logo
-        render_logo()
+    Render the sidebar with filters and controls without topbar navigation elements.
 
-        st.markdown("### Dashboard Controls")
+    Args:
+        energy_generation (DataFrame): Energy generation data.
+        energy_consumption (DataFrame): Energy consumption data.
+
+    Returns:
+        dict: Dictionary of selected filter values.
+    """
+    from data_loader import get_date_range_values, get_energy_sources
+
+    with st.sidebar:
+        st.markdown("### Dashboard Filters")
 
         if energy_generation.empty or energy_consumption.empty:
             st.error("Failed to load data. Please check the CSV files.")
@@ -92,13 +88,11 @@ def render_sidebar(energy_generation, energy_consumption):
             show_anomalies = st.checkbox("Detect Anomalies", False)
             show_forecast = st.checkbox("Show Forecast", False)
             forecast_periods = st.slider("Forecast Periods", 3, 24, 12) if show_forecast else 12
-
             enable_download = st.checkbox("Enable Data Export", False)
 
         st.markdown("---")
         st.markdown("<div class='footer'>BetterSave Energy Analytics Platform</div>", unsafe_allow_html=True)
-        
-        # Return selected values as a dictionary
+
         return {
             "year_selection": year_selection,
             "month_selection": month_selection,
@@ -113,7 +107,7 @@ def render_sidebar(energy_generation, energy_consumption):
 def render_kpi_section(metrics):
     """
     Render the KPI metrics section
-    
+
     Args:
         metrics (dict): Dictionary of calculated metrics
     """
@@ -155,7 +149,7 @@ def render_kpi_section(metrics):
 def render_energy_trends_tab(filtered_energy_gen, filtered_energy_cons, selected_sources, view_type, show_anomalies):
     """
     Render the Energy Trends tab content
-    
+
     Args:
         filtered_energy_gen (DataFrame): Filtered generation data
         filtered_energy_cons (DataFrame): Filtered consumption data
@@ -167,7 +161,7 @@ def render_energy_trends_tab(filtered_energy_gen, filtered_energy_cons, selected
 
     # Prepare data for visualization
     trends_data = prepare_trends_data(filtered_energy_cons, filtered_energy_gen, selected_sources, view_type)
-    
+
     # Create melted dataframe for Plotly
     trends_melted = trends_data.melt(id_vars=["Date"], var_name="Type", value_name="MWh")
 
@@ -201,10 +195,10 @@ def render_energy_trends_tab(filtered_energy_gen, filtered_energy_cons, selected
 
         # Aggregate data by month
         monthly_consumption = calculate_monthly_consumption(filtered_energy_cons)
-        
+
         # Create bar chart
         fig_month = create_monthly_barchart(monthly_consumption)
-        
+
         st.plotly_chart(fig_month, use_container_width=True)
 
     with col2:
@@ -212,10 +206,10 @@ def render_energy_trends_tab(filtered_energy_gen, filtered_energy_cons, selected
 
         # Aggregate data by day of week
         weekday_consumption = calculate_weekday_consumption(filtered_energy_cons)
-        
+
         # Create bar chart
         fig_weekday = create_weekday_barchart(weekday_consumption)
-        
+
         st.plotly_chart(fig_weekday, use_container_width=True)
 
     # Consumption vs generation ratio over time
@@ -227,7 +221,7 @@ def render_energy_trends_tab(filtered_energy_gen, filtered_energy_cons, selected
 
         # Create line chart
         fig_ratio = create_ratio_chart(trends_data)
-        
+
         st.plotly_chart(fig_ratio, use_container_width=True)
 
         # Add insight
@@ -245,7 +239,7 @@ def render_energy_trends_tab(filtered_energy_gen, filtered_energy_cons, selected
 def render_energy_sources_tab(filtered_energy_gen, selected_sources, view_type):
     """
     Render the Energy Sources tab content
-    
+
     Args:
         filtered_energy_gen (DataFrame): Filtered generation data
         selected_sources (list): List of selected energy sources
@@ -262,19 +256,19 @@ def render_energy_sources_tab(filtered_energy_gen, selected_sources, view_type):
     with source_tab1:
         # Create pie chart
         fig_pie = create_source_pie_chart(source_data)
-        
+
         st.plotly_chart(fig_pie, use_container_width=True)
 
     with source_tab2:
         # Create bar chart
         fig_bar = create_source_bar_chart(source_data)
-        
+
         st.plotly_chart(fig_bar, use_container_width=True)
 
     with source_tab3:
         # Prepare time series data by source
         time_series_data = prepare_source_time_series(filtered_energy_gen, selected_sources, view_type)
-        
+
         # Determine the x-axis column based on view type
         if view_type == "Daily":
             x_col = "Date"
@@ -284,11 +278,11 @@ def render_energy_sources_tab(filtered_energy_gen, selected_sources, view_type):
             x_col = "Label"
         else:  # Yearly
             x_col = "Year"
-            
+
         if x_col in time_series_data.columns:
             # Create time series chart
             fig_time = create_source_time_series(time_series_data, x_col, selected_sources, view_type)
-            
+
             st.plotly_chart(fig_time, use_container_width=True)
         else:
             st.info(f"Insufficient data for time series visualization with {view_type} resolution.")
@@ -302,7 +296,7 @@ def render_energy_sources_tab(filtered_energy_gen, selected_sources, view_type):
             # Create area chart
             from visualization import create_source_area_chart
             fig_area = create_source_area_chart(time_series_data, x_col, selected_sources, view_type)
-            
+
             st.plotly_chart(fig_area, use_container_width=True)
 
             # Calculate the percentage change in sources
@@ -328,7 +322,7 @@ def render_energy_sources_tab(filtered_energy_gen, selected_sources, view_type):
                     # Create a bar chart of changes
                     from visualization import create_source_change_chart
                     fig_change = create_source_change_chart(change_data)
-                    
+
                     st.plotly_chart(fig_change, use_container_width=True)
 
                     # Add insights
@@ -356,41 +350,41 @@ def render_energy_sources_tab(filtered_energy_gen, selected_sources, view_type):
 def render_forecasting_tab(filtered_energy_cons, forecast_periods, show_forecast):
     """
     Render the Forecasting tab content
-    
+
     Args:
         filtered_energy_cons (DataFrame): Filtered consumption data
         forecast_periods (int): Number of periods to forecast
         show_forecast (bool): Whether to show forecast
     """
     render_header("Energy Consumption Forecast", "section-title")
-    
+
     if show_forecast:
         from analysis import forecast_energy_trends
         from visualization import create_forecast_chart
-        
+
         # Generate forecast
         historical_data, forecast_data = forecast_energy_trends(filtered_energy_cons, periods=forecast_periods)
-        
+
         if historical_data is not None and forecast_data is not None:
             # Create forecast chart
             fig_forecast = create_forecast_chart(historical_data, forecast_data)
-            
+
             st.plotly_chart(fig_forecast, use_container_width=True)
-            
+
             # Show forecast data in a table
             with st.expander("View Forecast Data"):
                 forecast_df = pd.DataFrame({
                     "Date": forecast_data.index,
                     "Forecasted Consumption (MWh)": forecast_data.values
                 })
-                
+
                 st.dataframe(forecast_df, use_container_width=True)
-                
+
             # Add insights
             avg_historical = historical_data.mean()
             avg_forecast = forecast_data.mean()
             change_pct = ((avg_forecast - avg_historical) / avg_historical) * 100
-            
+
             if change_pct > 0:
                 render_info_card(
                     f"<b>Forecast Insight:</b> Average energy consumption is projected to <b>increase by {change_pct:.1f}%</b> in the forecast period compared to historical data.",
@@ -409,22 +403,22 @@ def render_forecasting_tab(filtered_energy_cons, forecast_periods, show_forecast
 def render_data_explorer_tab(filtered_energy_gen, filtered_energy_cons, enable_download):
     """
     Render the Data Explorer tab content
-    
+
     Args:
         filtered_energy_gen (DataFrame): Filtered generation data
         filtered_energy_cons (DataFrame): Filtered consumption data
         enable_download (bool): Whether to enable data download
     """
     render_header("Data Tables and Export", "section-title")
-    
+
     data_tab1, data_tab2 = st.tabs(["Consumption Data", "Generation Data"])
-    
+
     with data_tab1:
         st.write(f"Showing {len(filtered_energy_cons)} records of consumption data")
-        
+
         # Display data
         st.dataframe(filtered_energy_cons, use_container_width=True)
-        
+
         # Download option
         if enable_download:
             csv = filtered_energy_cons.to_csv(index=False).encode('utf-8')
@@ -434,13 +428,13 @@ def render_data_explorer_tab(filtered_energy_gen, filtered_energy_cons, enable_d
                 file_name="energy_consumption_filtered.csv",
                 mime="text/csv",
             )
-    
+
     with data_tab2:
         st.write(f"Showing {len(filtered_energy_gen)} records of generation data")
-        
+
         # Display data
         st.dataframe(filtered_energy_gen, use_container_width=True)
-        
+
         # Download option
         if enable_download:
             csv = filtered_energy_gen.to_csv(index=False).encode('utf-8')
@@ -450,22 +444,22 @@ def render_data_explorer_tab(filtered_energy_gen, filtered_energy_cons, enable_d
                 file_name="energy_generation_filtered.csv",
                 mime="text/csv",
             )
-    
+
     # Data summary
     with st.expander("Data Summary Statistics"):
         col1, col2 = st.columns(2)
-        
+
         with col1:
             render_header("Consumption Summary", "section-title")
             st.dataframe(filtered_energy_cons["Total (grid load) [MWh] Calculated resolutions"].describe(), use_container_width=True)
-        
+
         with col2:
             render_header("Generation Summary", "section-title")
-            
+
             # Get generation columns
             gen_columns = [col for col in filtered_energy_gen.columns if '[MWh]' in col]
-            
+
             # Calculate total generation
             filtered_energy_gen["Total Generation"] = filtered_energy_gen[gen_columns].sum(axis=1)
-            
+
             st.dataframe(filtered_energy_gen["Total Generation"].describe(), use_container_width=True)
