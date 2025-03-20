@@ -29,17 +29,31 @@ def render_home_sidebar():
         # Navigation links (since we removed the top navbar)
         st.markdown("### Navigation")
 
-        if st.button("🏠 Home", type="primary"):
-            st.switch_page("Home.py")
-
-        if st.button("🔍 Dashboard"):
-            st.switch_page("Pages/Dashboard.py")
-
-        if st.button("📊 Predictions"):
-            st.switch_page("Pages/Prediction.py")
-
-        if st.button("ℹ️ About Us"):
-            st.switch_page("Pages/About.py")
+        # Instead of using st.switch_page, we'll use direct links
+        st.markdown("""
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="/" style="text-decoration: none;">
+                <div style="background-color: #6c72ff; color: white; padding: 10px; border-radius: 5px; text-align: center;">
+                    🏠 Home
+                </div>
+            </a>
+            <a href="/Dashboard" style="text-decoration: none;">
+                <div style="background-color: #212c4d; color: white; padding: 10px; border-radius: 5px; text-align: center;">
+                    🔍 Dashboard
+                </div>
+            </a>
+            <a href="/Prediction" style="text-decoration: none;">
+                <div style="background-color: #212c4d; color: white; padding: 10px; border-radius: 5px; text-align: center;">
+                    📊 Predictions
+                </div>
+            </a>
+            <a href="/About" style="text-decoration: none;">
+                <div style="background-color: #212c4d; color: white; padding: 10px; border-radius: 5px; text-align: center;">
+                    ℹ️ About Us
+                </div>
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.markdown("---")
         st.markdown("<div class='footer'>BetterSave Energy Analytics Platform</div>", unsafe_allow_html=True)
