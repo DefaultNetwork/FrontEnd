@@ -1,7 +1,8 @@
 """
-main.py
+Dashboard.py
 Main entry point for the BetterSave Energy Dashboard application
 """
+
 
 import streamlit as st
 

@@ -213,3 +213,31 @@ def get_energy_sources(energy_generation):
                         for col in energy_generation.columns if "[MWh]" in col]
 
     return available_sources
+    
+def filter_data(energy_generation, energy_consumption, year_selection, month_selection, selected_sources):
+    """
+    Filter the energy generation and consumption data based on the selected year range and months.
+
+    Args:
+        energy_generation (DataFrame): The energy generation data.
+        energy_consumption (DataFrame): The energy consumption data.
+        year_selection (tuple): A tuple of (min_year, max_year) for filtering.
+        month_selection (list): A list of month numbers to include.
+        selected_sources (list): List of selected energy sources (not used for filtering here).
+
+    Returns:
+        tuple: (filtered_energy_generation, filtered_energy_consumption)
+    """
+    filtered_energy_cons = energy_consumption[
+        (energy_consumption["Year"] >= year_selection[0]) &
+        (energy_consumption["Year"] <= year_selection[1]) &
+        (energy_consumption["Month"].isin(month_selection))
+    ]
+
+    filtered_energy_gen = energy_generation[
+        (energy_generation["Year"] >= year_selection[0]) &
+        (energy_generation["Year"] <= year_selection[1]) &
+        (energy_generation["Month"].isin(month_selection))
+    ]
+
+    return filtered_energy_gen, filtered_energy_cons
