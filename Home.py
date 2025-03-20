@@ -26,34 +26,18 @@ def render_home_sidebar():
 
         st.markdown("---")
 
-        # Navigation links (since we removed the top navbar)
+        # Simple navigation without using st.switch_page or HTML links
         st.markdown("### Navigation")
+        st.info("Use the top navigation bar to move between pages.")
 
-        # Instead of using st.switch_page, we'll use direct links
+        # Just list available pages as plain text
         st.markdown("""
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a href="/" style="text-decoration: none;">
-                <div style="background-color: #6c72ff; color: white; padding: 10px; border-radius: 5px; text-align: center;">
-                    🏠 Home
-                </div>
-            </a>
-            <a href="/Dashboard" style="text-decoration: none;">
-                <div style="background-color: #212c4d; color: white; padding: 10px; border-radius: 5px; text-align: center;">
-                    🔍 Dashboard
-                </div>
-            </a>
-            <a href="/Prediction" style="text-decoration: none;">
-                <div style="background-color: #212c4d; color: white; padding: 10px; border-radius: 5px; text-align: center;">
-                    📊 Predictions
-                </div>
-            </a>
-            <a href="/About" style="text-decoration: none;">
-                <div style="background-color: #212c4d; color: white; padding: 10px; border-radius: 5px; text-align: center;">
-                    ℹ️ About Us
-                </div>
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
+        📋 **Available Pages:**
+        - 🏠 Home (current)
+        - 🔍 Dashboard
+        - 📊 Predictions
+        - ℹ️ About Us
+        """)
 
         st.markdown("---")
         st.markdown("<div class='footer'>BetterSave Energy Analytics Platform</div>", unsafe_allow_html=True)
@@ -70,11 +54,29 @@ def main():
     render_home_sidebar()
 
     # Check if the static directory and background image exist
-    if os.path.exists("static/BK1.jpg"):
-        # Set background image with overlay
-        set_bg_from_local("static/BK1.jpg")  # Path to the background image in static folder
-    else:
-        # Fallback dark background if image is not found
+    try:
+        # First try the direct path
+        if os.path.exists("static/BK1.jpg"):
+            set_bg_from_local("static/BK1.jpg")
+        # Then try relative to the script directory
+        elif os.path.exists(os.path.join(os.path.dirname(__file__), "static/BK1.jpg")):
+            set_bg_from_local(os.path.join(os.path.dirname(__file__), "static/BK1.jpg"))
+        # Try one level up
+        elif os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), "static/BK1.jpg")):
+            set_bg_from_local(os.path.join(os.path.dirname(os.path.dirname(__file__)), "static/BK1.jpg"))
+        else:
+            # Fallback dark background if image is not found
+            st.markdown("""
+                <style>
+                .stApp {
+                    background-color: #080f25;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            st.warning("Background image not found. Using default background.")
+    except Exception as e:
+        st.error(f"Error setting background: {e}")
+        # Ensure we have a background even if there's an error
         st.markdown("""
             <style>
             .stApp {
@@ -82,7 +84,6 @@ def main():
             }
             </style>
         """, unsafe_allow_html=True)
-        st.warning("Background image not found. Using default background.")
 
     # Main content - removed navigation bar to give unobstructed view
     st.markdown("<h1 class='main-header'>BetterSave Energy</h1>", unsafe_allow_html=True)
@@ -103,10 +104,21 @@ def main():
 
     # ✅ **Render Video & Close Button**
     if st.session_state.play_video:
-        # Check if video file exists
-        if os.path.exists("static/Final_video.MP4"):
-            st.video("static/Final_video.MP4")  # Path to the video file inside static folder
-        else:
+        # Check if video file exists (with multiple possible paths)
+        video_paths = [
+            "static/Final_video.MP4",
+            os.path.join(os.path.dirname(__file__), "static/Final_video.MP4"),
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), "static/Final_video.MP4")
+        ]
+
+        video_found = False
+        for path in video_paths:
+            if os.path.exists(path):
+                st.video(path)
+                video_found = True
+                break
+
+        if not video_found:
             st.error("Video file not found. Please check the path: static/Final_video.MP4")
 
         # Close Video Button
