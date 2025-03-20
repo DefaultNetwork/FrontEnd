@@ -12,7 +12,7 @@ from imports_config import configure_page
 from styles import apply_webflow_theme, render_footer, render_logo, set_bg_from_local
 
 def render_home_sidebar():
-    """Render a simplified sidebar for the home page"""
+    """Render a simplified sidebar for the home page with navigation options"""
     with st.sidebar:
         # Logo
         render_logo()
@@ -26,18 +26,26 @@ def render_home_sidebar():
 
         st.markdown("---")
 
-        # Simple navigation without using st.switch_page or HTML links
+        # Navigation with direct links using markdown
         st.markdown("### Navigation")
-        st.info("Use the top navigation bar to move between pages.")
 
-        # Just list available pages as plain text
-        st.markdown("""
-        📋 **Available Pages:**
-        - 🏠 Home (current)
-        - 🔍 Dashboard
-        - 📊 Predictions
-        - ℹ️ About Us
-        """)
+        # Current page indicator
+        st.markdown("**🏠 Home** (current page)")
+
+        # Use regular Streamlit buttons for navigation
+        # These will cause a full page reload but that's OK
+        if st.button("🔍 Dashboard", use_container_width=True):
+            # Use relative link that should work in most setups
+            st.markdown('<meta http-equiv="refresh" content="0;url=Dashboard">', unsafe_allow_html=True)
+            st.stop()  # Stop execution after redirect
+
+        if st.button("📊 Predictions", use_container_width=True):
+            st.markdown('<meta http-equiv="refresh" content="0;url=Prediction">', unsafe_allow_html=True)
+            st.stop()
+
+        if st.button("ℹ️ About Us", use_container_width=True):
+            st.markdown('<meta http-equiv="refresh" content="0;url=About">', unsafe_allow_html=True)
+            st.stop()
 
         st.markdown("---")
         st.markdown("<div class='footer'>BetterSave Energy Analytics Platform</div>", unsafe_allow_html=True)
@@ -50,7 +58,7 @@ def main():
     # Apply the Webflow theme
     apply_webflow_theme()
 
-    # Render simplified sidebar
+    # Render sidebar with navigation
     render_home_sidebar()
 
     # Check if the static directory and background image exist
@@ -85,7 +93,7 @@ def main():
             </style>
         """, unsafe_allow_html=True)
 
-    # Main content - removed navigation bar to give unobstructed view
+    # Main content - unobstructed view without navigation bar
     st.markdown("<h1 class='main-header'>BetterSave Energy</h1>", unsafe_allow_html=True)
     st.markdown("<p class='center-text' style='font-size: 1.5rem;'>Intelligent Energy Storage and Distribution</p>", unsafe_allow_html=True)
 
