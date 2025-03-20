@@ -134,6 +134,14 @@ def add_bg_from_local(image_file):
         unsafe_allow_html=True
     )
 
+def render_navigation():
+    import streamlit as st
+    st.sidebar.title("Navigation")
+    pages = ["Dashboard", "Prediction", "About"]
+    selection = st.sidebar.radio("Go to", pages)
+    # Set a query parameter to let your app know which page to display
+    st.experimental_set_query_params(page=selection)
+
 # **✅ Apply Background Image**
 add_bg_from_local("static/BK1.jpg")  # Path to the background image in static folder
 

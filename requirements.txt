@@ -1,6 +1,5 @@
 # BetterSave Energy Dashboard Requirements
 # Core packages
-streamlit>=1.25.0
 pandas>=2.0.0
 numpy>=1.24.0
 
@@ -14,11 +13,3 @@ requests>=2.31.0
 # Time series analysis (for forecasting functionality)
 statsmodels>=0.14.0
 
-# Optional: For advanced data science features
-# scikit-learn>=1.3.0
-# tensorflow>=2.13.0
-# prophet>=1.1.4
-
-# Deployment helpers
-# streamlit-extras>=0.3.0
-# watchdog>=3.0.0
