@@ -8,6 +8,7 @@ import base64
 
 # ===== COLOR DEFINITIONS =====
 # Centralized color palette for the entire application
+# Note: These same colors are defined in imports_config.py to avoid circular imports
 COLORS = {
     # Core theme colors from Webflow theme
     "neutral_800": "#080f25",     # Dark background
@@ -1124,11 +1125,6 @@ def render_prediction_metric_card(label, value, unit=""):
             <div class="metric-unit">{unit}</div>
         </div>
     """, unsafe_allow_html=True)
-
-def add_prediction_styles():
-    """Add prediction page specific styles - now just a wrapper for clean import"""
-    # All styles are now in the main WEBFLOW_CSS
-    pass
 
 def set_bg_from_local(image_file):
     """
