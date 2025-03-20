@@ -32,20 +32,14 @@ def render_home_sidebar():
         # Current page indicator
         st.markdown("**🏠 Home** (current page)")
 
-        # Use regular Streamlit buttons for navigation
-        # These will cause a full page reload but that's OK
-        if st.button("🔍 Dashboard", use_container_width=True):
-            # Use relative link that should work in most setups
-            st.markdown('<meta http-equiv="refresh" content="0;url=Dashboard">', unsafe_allow_html=True)
-            st.stop()  # Stop execution after redirect
+        # Use markdown links with the correct directory structure
+        st.markdown("""
+        [🔍 Dashboard](/Pages/Dashboard)
 
-        if st.button("📊 Predictions", use_container_width=True):
-            st.markdown('<meta http-equiv="refresh" content="0;url=Prediction">', unsafe_allow_html=True)
-            st.stop()
+        [📊 Predictions](/Pages/Prediction)
 
-        if st.button("ℹ️ About Us", use_container_width=True):
-            st.markdown('<meta http-equiv="refresh" content="0;url=About">', unsafe_allow_html=True)
-            st.stop()
+        [ℹ️ About Us](/Pages/About)
+        """)
 
         st.markdown("---")
         st.markdown("<div class='footer'>BetterSave Energy Analytics Platform</div>", unsafe_allow_html=True)
