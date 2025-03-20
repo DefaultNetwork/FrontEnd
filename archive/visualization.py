@@ -7,8 +7,50 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 
-# Import centralized styles
-from styles import COLORS, default_layout
+# Webflow theme color palette
+COLORS = {
+    "primary": "#6c72ff",      # --accent--primary-1
+    "secondary": "#57c3ff",    # --secondary--color-3
+    "tertiary": "#9a91fb",     # --secondary--color-2
+    "accent": "#fdb52a",       # --secondary--color-5
+    "neutral": "#343b4f",      # --secondary--color-4
+    "bg_primary": "#101935",   # --secondary--color-1
+    "bg_transparent": "rgba(16, 25, 53, 0)",  # Transparent version of --secondary--color-1
+    "text": "#aeb9e1",         # --neutral--400
+    "grid": "rgba(55, 68, 107, 0.5)",  # --neutral--600 with transparency
+    "green": "#14ca74",        # --system--green-300
+    "red": "#ff5a65"           # --system--300
+}
+
+# Default plot settings to match Webflow theme
+def default_layout(fig, title="", x_title="", y_title="", height=500):
+    """
+    Apply default Webflow theme styling to a Plotly figure
+    
+    Args:
+        fig (Figure): Plotly figure to style
+        title (str, optional): Chart title
+        x_title (str, optional): X-axis title
+        y_title (str, optional): Y-axis title
+        height (int, optional): Chart height
+        
+    Returns:
+        Figure: Styled Plotly figure
+    """
+    fig.update_layout(
+        title=title,
+        xaxis_title=x_title,
+        yaxis_title=y_title,
+        height=height,
+        template="plotly_dark",
+        plot_bgcolor=COLORS["bg_primary"],
+        paper_bgcolor=COLORS["bg_transparent"],
+        font=dict(color=COLORS["text"]),
+        xaxis=dict(gridcolor=COLORS["grid"]),
+        yaxis=dict(gridcolor=COLORS["grid"]),
+        hovermode="x unified"
+    )
+    return fig
 
 def create_trends_chart(trends_melted, view_type):
     """
@@ -70,8 +112,8 @@ def add_anomalies_to_chart(fig, anomalies):
             marker=dict(
                 symbol="circle",
                 size=12,
-                color=COLORS["error"],
-                line=dict(width=2, color=COLORS["error"])
+                color=COLORS["red"],
+                line=dict(width=2, color=COLORS["red"])
             ),
             name="Anomalies"
         )
@@ -95,7 +137,7 @@ def create_monthly_barchart(monthly_consumption):
         title="Average Consumption by Month",
         template="plotly_dark",
         color="Total (grid load) [MWh] Calculated resolutions",
-        color_continuous_scale=[COLORS["neutral_accent"], COLORS["secondary"]]
+        color_continuous_scale=[COLORS["neutral"], COLORS["secondary"]]
     )
     
     fig = default_layout(
@@ -162,7 +204,7 @@ def create_ratio_chart(trends_data):
     fig.add_hline(
         y=100,
         line_dash="dash",
-        line_color=COLORS["success"],
+        line_color=COLORS["green"],
         annotation_text="100% (Generation equals Consumption)",
         annotation_position="bottom right"
     )
@@ -198,7 +240,7 @@ def create_source_pie_chart(source_data):
             COLORS["secondary"], 
             COLORS["tertiary"], 
             COLORS["accent"], 
-            COLORS["neutral_accent"]
+            COLORS["neutral"]
         ]
     )
     
@@ -211,7 +253,7 @@ def create_source_pie_chart(source_data):
     fig.update_layout(
         height=500,
         paper_bgcolor=COLORS["bg_transparent"],
-        font=dict(color=COLORS["neutral_400"])
+        font=dict(color=COLORS["text"])
     )
     
     return fig
@@ -238,7 +280,7 @@ def create_source_bar_chart(source_data):
             COLORS["secondary"], 
             COLORS["tertiary"], 
             COLORS["accent"], 
-            COLORS["neutral_accent"]
+            COLORS["neutral"]
         ]
     )
     
@@ -276,7 +318,7 @@ def create_source_time_series(time_series_data, x_col, selected_sources, view_ty
             COLORS["secondary"], 
             COLORS["tertiary"], 
             COLORS["accent"], 
-            COLORS["neutral_accent"]
+            COLORS["neutral"]
         ]
     )
     
@@ -327,7 +369,7 @@ def create_source_area_chart(area_data, x_col, selected_sources, view_type):
             COLORS["secondary"], 
             COLORS["tertiary"], 
             COLORS["accent"], 
-            COLORS["neutral_accent"]
+            COLORS["neutral"]
         ]
     )
     
@@ -366,7 +408,7 @@ def create_source_change_chart(change_data):
         title="Source Growth: First to Last Period",
         template="plotly_dark",
         color="Change (%)",
-        color_continuous_scale=[COLORS["error"], COLORS["neutral_400"], COLORS["success"]],
+        color_continuous_scale=[COLORS["red"], COLORS["text"], COLORS["green"]],
         color_continuous_midpoint=0
     )
     
@@ -425,7 +467,7 @@ def create_forecast_chart(historical_data, forecast_data, title="Energy Consumpt
         x=split_date, 
         line_width=1, 
         line_dash="dash", 
-        line_color=COLORS["neutral_400"],
+        line_color=COLORS["text"],
         annotation_text="Forecast Start", 
         annotation_position="top right"
     )

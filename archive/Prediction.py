@@ -13,17 +13,114 @@ import plotly.express as px
 
 from imports_config import configure_page
 from data_loader import load_data, load_prediction_data
-from styles import (
-    apply_webflow_theme, 
-    render_navigation, 
-    render_footer, 
-    render_header, 
-    render_info_card, 
-    render_prediction_metric_card,
-    COLORS, 
-    default_layout
-)
+from styling import apply_webflow_theme, render_navigation, render_footer, render_header, render_info_card
 from analysis import forecast_energy_trends
+from visualization import default_layout, COLORS
+
+# Add improved styles for the prediction page
+def add_prediction_styles():
+    st.markdown("""
+    <style>
+    /* Clean, professional text styling */
+    .highlight-text {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        color: #6c72ff;
+        margin-bottom: 15px;
+    }
+
+    .center-text {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    /* Metric cards */
+    .metric-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .metric-card {
+        background: linear-gradient(135deg, #101935, #212c4d);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 10px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .metric-label {
+        font-size: 16px;
+        color: #aeb9e1;
+        margin-bottom: 8px;
+    }
+
+    .metric-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .metric-unit {
+        font-size: 14px;
+        color: #7e89ac;
+    }
+
+    /* Model selector */
+    .model-selector {
+        background-color: #101935;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #37446b;
+    }
+
+    /* Impact section */
+    .impact-section {
+        background: linear-gradient(135deg, #101935, #212c4d);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 25px 0;
+        border: 1px solid #37446b;
+    }
+
+    .impact-section h2 {
+        text-align: center;
+        color: #57c3ff;
+        margin-bottom: 20px;
+    }
+
+    /* Data table styling */
+    .data-table-section {
+        background-color: #101935;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 25px 0;
+        border: 1px solid #37446b;
+    }
+
+    /* Section titles */
+    .section-title {
+        color: #57c3ff;
+        font-size: 20px;
+        font-weight: 600;
+        margin: 20px 0 15px 0;
+        border-bottom: 1px solid #37446b;
+        padding-bottom: 8px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # API endpoint for prediction service
 API_URL = "https://your-prediction-api-endpoint.com/predict"  # Replace with your actual API endpoint
@@ -88,6 +185,16 @@ def load_csv_prediction():
         st.error(f"Error loading CSV prediction data: {e}")
         return None
 
+def render_metric_card(label, value, unit=""):
+    """Render a custom metric card with hover effect"""
+    st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-label">{label}</div>
+            <div class="metric-value">{value}</div>
+            <div class="metric-unit">{unit}</div>
+        </div>
+    """, unsafe_allow_html=True)
+
 def main():
     """Main prediction page entry point"""
     # Configure the page
@@ -95,6 +202,9 @@ def main():
 
     # Apply the Webflow theme
     apply_webflow_theme()
+
+    # Add custom prediction styles
+    add_prediction_styles()
 
     # Render navigation bar
     render_navigation()
@@ -212,7 +322,7 @@ def main():
                 y=data[forecast_col],
                 mode="lines",
                 name="Energy Surplus Prediction",
-                line=dict(color=COLORS["secondary"], width=3)
+                line=dict(color="#57c3ff", width=3)
             ))
 
             # Add confidence intervals if available
@@ -221,29 +331,29 @@ def main():
                     x=data["Date"].tolist() + data["Date"].tolist()[::-1],
                     y=data["upper"].tolist() + data["lower"].tolist()[::-1],
                     fill='toself',
-                    fillcolor=f'rgba(87, 195, 255, 0.2)',
+                    fillcolor='rgba(87, 195, 255, 0.2)',
                     line=dict(color='rgba(255,255,255,0)'),
                     name="Confidence Interval"
                 ))
 
-            # Apply the centralized styling
-            fig = default_layout(
-                fig,
-                title=f"Energy Surplus Prediction ({prediction_model})",
-                x_title="Date",
-                y_title="Energy (MWh)",
-                height=500
-            )
-
-            # Add legend positioning
+            # Customize the figure
             fig.update_layout(
+                title=f"Energy Surplus Prediction ({prediction_model})",
+                xaxis_title="Date",
+                yaxis_title="Energy (MWh)",
+                template="plotly_dark",
+                plot_bgcolor="#101935",
+                paper_bgcolor="rgba(16, 25, 53, 0)",
+                font=dict(color="#aeb9e1"),
                 legend=dict(
                     orientation="h",
                     yanchor="bottom",
                     y=1.02,
                     xanchor="center",
                     x=0.5
-                )
+                ),
+                margin=dict(l=20, r=20, t=60, b=20),
+                height=500
             )
 
             # Show the chart
@@ -262,21 +372,21 @@ def main():
             peak_date_str = peak_date.strftime('%b %d, %Y') if isinstance(peak_date, pd.Timestamp) else str(peak_date)
 
             with col1:
-                render_prediction_metric_card(
+                render_metric_card(
                     "Total Energy Surplus",
                     f"{total_surplus:,.1f}",
                     "MWh"
                 )
 
             with col2:
-                render_prediction_metric_card(
+                render_metric_card(
                     "Average Daily Surplus",
                     f"{avg_daily_surplus:,.1f}",
                     "MWh/day"
                 )
 
             with col3:
-                render_prediction_metric_card(
+                render_metric_card(
                     "Peak Surplus",
                     f"{peak_surplus:,.1f}",
                     f"MWh on {peak_date_str}"
@@ -316,7 +426,7 @@ def main():
                         </div>
                     """, unsafe_allow_html=True)
 
-                    st.markdown(f"<div style='text-align: center; font-size: 48px; font-weight: bold; color: {COLORS['secondary']};'>{total_charges:,}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='text-align: center; font-size: 48px; font-weight: bold; color: #57c3ff;'>{total_charges:,}</div>", unsafe_allow_html=True)
 
                     st.markdown(f"<div class='center-text'>{selected_ev} vehicles</div>", unsafe_allow_html=True)
 
@@ -353,7 +463,7 @@ def main():
                         </div>
                     """, unsafe_allow_html=True)
 
-                    st.markdown(f"<div style='text-align: center; font-size: 48px; font-weight: bold; color: {COLORS['secondary']};'>{homes_powered:,}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='text-align: center; font-size: 48px; font-weight: bold; color: #57c3ff;'>{homes_powered:,}</div>", unsafe_allow_html=True)
 
                     st.markdown(f"<div class='center-text'>German homes for {months_of_data:.1f} months</div>", unsafe_allow_html=True)
 
@@ -385,7 +495,7 @@ def main():
                         </div>
                     """, unsafe_allow_html=True)
 
-                    st.markdown(f"<div style='text-align: center; font-size: 48px; font-weight: bold; color: {COLORS['secondary']};'>{co2_saved:,.1f}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='text-align: center; font-size: 48px; font-weight: bold; color: #57c3ff;'>{co2_saved:,.1f}</div>", unsafe_allow_html=True)
 
                     st.markdown(f"<div class='center-text'>Metric tons of CO₂ emissions</div>", unsafe_allow_html=True)
 

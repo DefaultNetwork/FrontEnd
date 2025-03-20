@@ -14,9 +14,6 @@ import calendar
 import os
 import time
 
-# Import colors from centralized styles
-from styles import COLORS
-
 # Set page configuration
 def configure_page():
     """Configure the Streamlit page settings"""
@@ -27,18 +24,12 @@ def configure_page():
         initial_sidebar_state="expanded"
     )
 
-# Define plot theme configuration to match Webflow dark theme (imported from styles.py)
+# Define plot theme configuration to match Webflow dark theme (can be imported by visualization modules)
 PLOT_THEME = {
     "template": "plotly_dark",
-    "plot_bgcolor": COLORS["bg_primary"],
-    "paper_bgcolor": COLORS["bg_transparent"],
-    "font_color": COLORS["neutral_400"],
-    "grid_color": COLORS["grid"],
-    "color_sequence": [
-        COLORS["primary"], 
-        COLORS["secondary"], 
-        COLORS["tertiary"], 
-        COLORS["accent"], 
-        COLORS["neutral_accent"]
-    ]
+    "plot_bgcolor": "#101935",  # --secondary--color-1
+    "paper_bgcolor": "rgba(16, 25, 53, 0)",  # Transparent version of --secondary--color-1
+    "font_color": "#aeb9e1",  # --neutral--400
+    "grid_color": "rgba(55, 68, 107, 0.5)",  # --neutral--600 with transparency
+    "color_sequence": ["#6c72ff", "#57c3ff", "#9a91fb", "#fdb52a", "#343b4f"]  # Webflow colors
 }
