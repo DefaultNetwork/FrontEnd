@@ -112,12 +112,13 @@ def apply_webflow_theme():
     }
 
     .stButton > button.secondary:hover {
-      background-color: var(--accent--primary-1);
+      background-color: var(--neutral--100);
+      color: var(--neutral--700);
     }
 
     /* Input fields */
     div[data-baseweb="input"], div[data-baseweb="select"], div[data-baseweb="textarea"] {
-      background-color: var(--secondary--color-1);
+      background-color: var(--neutral--100);
     }
 
     .stTextInput > div > div > input,
@@ -474,17 +475,17 @@ def apply_webflow_theme():
       border-radius: 0 0 10px 10px;
       margin-bottom: 20px;
     }
-    
+
     .navbar-logo {
       font-size: 1.5rem;
       font-weight: bold;
     }
-    
+
     .navbar-links {
       display: flex;
       gap: 1.5rem;
     }
-    
+
     .nav-link {
       color: var(--neutral--400);
       text-decoration: none;
@@ -493,12 +494,12 @@ def apply_webflow_theme():
       border-radius: 6px;
       transition: all 0.3s ease;
     }
-    
+
     .nav-link:hover {
       color: var(--neutral--100);
       background-color: rgba(108, 114, 255, 0.1);
     }
-    
+
     .nav-link.active {
       color: var(--neutral--100);
       background-color: var(--accent--primary-1);
@@ -508,27 +509,27 @@ def apply_webflow_theme():
     .hero-content {
       padding: 2rem 0;
     }
-    
+
     .hero-title {
       font-size: 2.2rem;
       font-weight: 700;
       color: var(--accent--primary-1);
       margin-bottom: 1rem;
     }
-    
+
     .hero-description {
       font-size: 1.2rem;
       color: var(--neutral--300);
       margin-bottom: 2rem;
       line-height: 1.5;
     }
-    
+
     .hero-buttons {
       display: flex;
       gap: 1rem;
       margin-top: 2rem;
     }
-    
+
     .hero-button {
       display: inline-block;
       padding: 0.8rem 1.5rem;
@@ -537,27 +538,27 @@ def apply_webflow_theme():
       text-decoration: none;
       transition: all 0.3s ease;
     }
-    
+
     .primary-button {
       background-color: var(--accent--primary-1);
       color: white;
     }
-    
+
     .primary-button:hover {
       background-color: var(--secondary--color-2);
       transform: translateY(-3px);
     }
-    
+
     .secondary-button {
       background-color: var(--secondary--color-4);
       color: var(--neutral--100);
     }
-    
+
     .secondary-button:hover {
       background-color: var(--neutral--600);
       transform: translateY(-3px);
     }
-    
+
     .placeholder-image {
       background: linear-gradient(135deg, var(--secondary--color-1), var(--neutral--700));
       height: 300px;
@@ -571,7 +572,7 @@ def apply_webflow_theme():
       font-size: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
-    
+
     .feature-card {
       background: linear-gradient(135deg, var(--secondary--color-1), var(--neutral--700));
       border-radius: 12px;
@@ -582,30 +583,30 @@ def apply_webflow_theme():
       margin-bottom: 1rem;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .feature-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
-    
+
     .feature-icon {
       font-size: 3rem;
       margin-bottom: 1rem;
       color: var(--accent--primary-1);
     }
-    
+
     .feature-card h3 {
       font-size: 1.5rem;
       font-weight: 600;
       color: var(--neutral--100);
       margin-bottom: 1rem;
     }
-    
+
     .feature-card p {
       color: var(--neutral--300);
       line-height: 1.5;
     }
-    
+
     .cta-section {
       background: linear-gradient(135deg, var(--secondary--color-1), var(--neutral--700));
       padding: 3rem 2rem;
@@ -613,20 +614,20 @@ def apply_webflow_theme():
       text-align: center;
       margin: 3rem 0;
     }
-    
+
     .cta-section h2 {
       font-size: 2rem;
       font-weight: 700;
       color: var(--neutral--100);
       margin-bottom: 1rem;
     }
-    
+
     .cta-section p {
       font-size: 1.2rem;
       color: var(--neutral--300);
       margin-bottom: 2rem;
     }
-    
+
     .cta-button {
       display: inline-block;
       padding: 1rem 2rem;
@@ -637,24 +638,24 @@ def apply_webflow_theme():
       text-decoration: none;
       transition: all 0.3s ease;
     }
-    
+
     .cta-button:hover {
       background-color: var(--secondary--color-2);
       transform: translateY(-3px);
     }
-    
+
     /* About page styling */
     .about-section {
       margin-bottom: 3rem;
     }
-    
+
     .about-text {
       font-size: 1.1rem;
       line-height: 1.6;
       color: var(--neutral--200);
       margin-bottom: 1.5rem;
     }
-    
+
     .team-card {
       background: linear-gradient(135deg, var(--secondary--color-1), var(--neutral--700));
       border-radius: 12px;
@@ -665,36 +666,36 @@ def apply_webflow_theme():
       margin-bottom: 1.5rem;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .team-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
-    
+
     .team-avatar {
       font-size: 3rem;
       margin-bottom: 1rem;
     }
-    
+
     .team-card h3 {
       font-size: 1.3rem;
       font-weight: 600;
       color: var(--neutral--100);
       margin-bottom: 0.5rem;
     }
-    
+
     .team-title {
       color: var(--accent--primary-1);
       font-weight: 500;
       margin-bottom: 1rem;
     }
-    
+
     .team-bio {
       color: var(--neutral--300);
       font-size: 0.9rem;
       line-height: 1.5;
     }
-    
+
     .approach-card {
       background: linear-gradient(135deg, var(--neutral--700), var(--secondary--color-4));
       border-radius: 8px;
@@ -702,53 +703,53 @@ def apply_webflow_theme():
       height: 100%;
       margin-bottom: 1.5rem;
     }
-    
+
     .approach-card h3 {
       color: var(--secondary--color-3);
       font-weight: 600;
       margin-bottom: 1rem;
     }
-    
+
     .approach-card p {
       color: var(--neutral--300);
       line-height: 1.5;
     }
-    
+
     .contact-section {
       background: linear-gradient(135deg, var(--secondary--color-1), var(--neutral--700));
       padding: 2rem;
       border-radius: 12px;
       margin: 3rem 0;
     }
-    
+
     .contact-text {
       color: var(--neutral--300);
       margin-bottom: 1.5rem;
       line-height: 1.5;
     }
-    
+
     .contact-info {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
-    
+
     .contact-item {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
-    
+
     .contact-icon {
       font-size: 1.5rem;
     }
-    
+
     .contact-link {
       color: var(--accent--primary-1);
       text-decoration: none;
       transition: color 0.3s ease;
     }
-    
+
     .contact-link:hover {
       color: var(--secondary--color-3);
       text-decoration: underline;
@@ -763,41 +764,41 @@ def apply_webflow_theme():
       div[data-testid="stMetric"] {
         padding: 1rem;
       }
-      
+
       .navbar {
         flex-direction: column;
         gap: 1rem;
         padding: 1rem;
       }
-      
+
       .navbar-links {
         width: 100%;
         justify-content: space-between;
         flex-wrap: wrap;
       }
-      
+
       .nav-link {
         padding: 0.3rem 0.7rem;
         font-size: 0.9rem;
       }
-      
+
       .hero-title {
         font-size: 1.8rem;
       }
-      
+
       .hero-description {
         font-size: 1rem;
       }
-      
+
       .hero-buttons {
         flex-direction: column;
         gap: 1rem;
       }
-      
+
       .contact-info {
         flex-direction: column;
       }
-      
+
       .feature-card, .team-card {
         min-height: auto;
       }
@@ -815,7 +816,7 @@ def apply_webflow_theme():
 def render_metric_card(title, value, subtitle="", metric_type="primary"):
     """
     Render a custom metric card with Webflow styling
-    
+
     Args:
         title (str): Card title
         value (str): Main value to display
@@ -834,7 +835,7 @@ def render_metric_card(title, value, subtitle="", metric_type="primary"):
 def render_info_card(text, card_type="info"):
     """
     Render an information card (info, warning, etc.)
-    
+
     Args:
         text (str): Card text content
         card_type (str, optional): Card type - "info", "warning", "success", or "error"
@@ -848,7 +849,7 @@ def render_info_card(text, card_type="info"):
 def render_header(text, header_type="main-header"):
     """
     Render a styled header
-    
+
     Args:
         text (str): Header text
         header_type (str, optional): Header style class - "main-header", "subheader", or "section-title"

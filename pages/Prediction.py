@@ -206,8 +206,7 @@ def main():
     # Add custom prediction styles
     add_prediction_styles()
 
-    # Render navigation bar
-    render_navigation()
+
 
     # Page header with clean styling
     render_header("Energy Prediction Dashboard", "main-header")

@@ -16,8 +16,7 @@ def main():
     # Apply the Webflow theme
     apply_webflow_theme()
 
-    # Render navigation bar
-    render_navigation()
+ 
 
     # Page header
     render_header("About BetterSave Energy", "main-header")

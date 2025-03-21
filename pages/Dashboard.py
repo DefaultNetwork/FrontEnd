@@ -60,8 +60,6 @@ def main():
     # Calculate key metrics from filtered data
     metrics = analyze_energy_trends(filtered_energy_gen, filtered_energy_cons)
 
-    # Render navigation bar
-    render_navigation()
 
     # Main Dashboard
     render_header("BetterSave Energy Dashboard", "main-header")
